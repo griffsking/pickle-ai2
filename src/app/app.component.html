@@ -1,0 +1,10 @@
+<div class="bg-black" style="height: 100%; padding-top: 20px">
+  <div class="bg-gray-700 rounded-md m-auto overflow-auto" id="chatBox" style="height: 80%; width: 90%; padding-top: 1rem"></div>
+  <div class="bg-gray-700 my-1 rounded-md m-auto" style="height: 10%; width: 90%">
+    <div style="display: flex; height: 100%">
+      <input class="inputField rounded-md" placeholder="Ask any question..." [(ngModel)]="myInput"
+      (keydown)="onGoClickEnter($event); addToChatFieldEnter($event)"/>
+      <div class="sendButton" title="Ask Gemini" (click)="onGoClick(); addToChatField(); myInput=''"><i class="fa-solid fa-paper-plane" style="color: #ffffff;"></i></div>
+    </div>
+  </div>
+</div>
