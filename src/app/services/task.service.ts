@@ -229,11 +229,12 @@ export class TaskService {
     return id ? doc(taskCollection, id) : doc(taskCollection); // Firestore generates ID if not provided
   }
 
-  async fileToGenerativePart(file: File) {
+  async fileToGenerativePart(file: Blob) {
     const base64EncodedDataPromise = new Promise((resolve) => {
       const reader = new FileReader();
       reader.onloadend = () =>
         resolve(JSON.stringify(reader?.result).split(',')[1]);
+      console.log("file: " + file.type);
       reader.readAsDataURL(file);
     });
     const result = await base64EncodedDataPromise;
@@ -254,22 +255,26 @@ export class TaskService {
   }
 
   async generateTask(input: {
+    file?: File;
     prompt: string;
   }): Promise<GeneratedTasks> {
-    const { prompt } = input;
-
-    if (!prompt) {
+    const { file, prompt } = input;
+    console.log(file);
+    if (!file && !prompt) {
       return {
         title: "Please provide a prompt",
         subtasks: [],
       };
     }
 
+    const imagePart = file ? await this.fileToGenerativePart(file) : '';
+
     try {
       const result = await this.experimentModel.generateContent(
-        [prompt].filter(Boolean)
+        [prompt, imagePart].filter(Boolean)
       );
       const response = await result.response.text();
+      console.log("response: " + response);
       return JSON.parse(response);
     } catch (error) {
       this.handleError(error, 'Failed to generate subtasks');

@@ -1,6 +1,17 @@
 {
   "hosting": {
-    "public": "dist/firebase-ai-angular/browser"
+    "public": "Ai Pickle",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
   },
   "firestore": {
     "database": "(default)",

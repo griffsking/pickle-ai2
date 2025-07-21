@@ -20,7 +20,7 @@ form.onsubmit = async (ev) => {
 
   try {
     // Load the image as a base64 string
-    let imageUrl = form.elements.namedItem('chosen-image').value;
+    let imageUrl = '../assets/dummydata.txt';
     let imageBase64 = await fetch(imageUrl)
       .then(r => r.arrayBuffer())
       .then(a => Base64.fromByteArray(new Uint8Array(a)));
@@ -30,7 +30,7 @@ form.onsubmit = async (ev) => {
       {
         role: 'user',
         parts: [
-          { inlineData: { mimeType: 'image/jpeg', data: imageBase64 } },
+          { inlineData: { mimeType: 'text/plain', data: imageBase64 } },
           { text: promptInput.value }
         ]
       }
@@ -39,7 +39,7 @@ form.onsubmit = async (ev) => {
     // Call the multimodal model, and get a stream of results
     const ai = new GoogleGenAI({ apiKey: API_KEY });
     const stream = await ai.models.generateContentStream({
-      model: "gemini-2.0-flash",
+      model: "gemini-2.5-flash",
       contents,
       safetySettings: [
         {
