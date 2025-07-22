@@ -4,8 +4,8 @@ import { FormsModule } from '@angular/forms';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { TaskWithSubtasks, Task, TaskService } from './services/task.service';
 import { Timestamp } from 'firebase/firestore';
-import { InlineDataPart } from "firebase/ai";
-import * as roughProfiles from '../assets/dummydata.json';
+import { InlineDataPart } from 'firebase/ai';
+// import * as roughProfiles from '../assets/dummydata.json';
 import { DummyData } from './dummydata.component';
 //import { functions } from '../firebaseConfig';
 //import { httpsCallable } from 'firebase/functions';
@@ -13,46 +13,45 @@ import { DummyData } from './dummydata.component';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [
-    CommonModule,
-    FormsModule,
-    DummyData
-  ],
+  imports: [CommonModule, FormsModule, DummyData],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppComponent implements OnInit {
-
   // @ViewChild('room') roomImage! : CheckboximageComponent;
 
   myInput: string = '';
   textStream: string = '';
   chatRespId: number = 0;
   generatedTask?: TaskWithSubtasks;
-  dummydata: Blob = new Blob;
+  dummydata: Blob = new Blob();
 
-  @ViewChild('dummydata') bigdummydata! : DummyData;
+  @ViewChild('dummydata') bigdummydata!: DummyData;
 
   bigdummydataFile?: File;
 
   constructor(public taskService: TaskService) {}
 
   ngOnInit() {
-    document.getElementsByClassName("sendButton")[0].addEventListener('click', (event) => {
-      this.myInput = '';
-    });
+    document
+      .getElementsByClassName('sendButton')[0]
+      .addEventListener('click', (event) => {
+        this.myInput = '';
+      });
   }
 
   async ngAfterViewInit() {
-    // const fetchData = await fetch('../assets/dummydata.json');
-    // const lmao = await fetchData.json();
-    // console.log(lmao);
-    // this.dummydata = await fetchData.blob();
-    // this.dummydata = new Blob([lmao], {type: 'application/json'});
-    // this.dummydata = new File([blob], 'dummydata.json', blob);
-    // console.log(this.dummydata);
-    this.bigdummydataFile = await this.bigdummydata.getFile();
+    // Load JSON asset from the Angular assets folder
+    const response = await fetch('assets/dummydata.json');
+    const jsonData = await response.json();
+    // Convert JSON object to string and create a Blob
+    const jsonString = JSON.stringify(jsonData);
+    const blob = new Blob([jsonString], { type: 'application/json' });
+    // Create a File instance for the AI service
+    this.bigdummydataFile = new File([blob], 'dummydata.json', {
+      type: 'application/json',
+    });
   }
 
   async callFunction() {
@@ -60,7 +59,7 @@ export class AppComponent implements OnInit {
     //const result = await helloWorld();
     //console.log(result.data);
     //return result.data;
-  };
+  }
 
   addToChatFieldEnter(event: KeyboardEvent) {
     if (event.key === 'Enter') {
@@ -70,42 +69,42 @@ export class AppComponent implements OnInit {
   }
 
   addToChatField() {
-    if(this.myInput) {
-      const chatMsgBox = document.createElement("div");
-      chatMsgBox.style.width = "50%";
-      chatMsgBox.style.margin = "auto";
-      chatMsgBox.style.marginBottom = "0.5rem";
-      chatMsgBox.style.marginRight = "0.85rem";
-      chatMsgBox.style.paddingLeft = "0.5rem";
-      chatMsgBox.style.paddingRight = "0.5rem";
-      chatMsgBox.style.lineHeight = "1.35";
-      chatMsgBox.style.backgroundColor = "var(--color-gray-500)";
-      chatMsgBox.style.borderRadius = "var(--radius-md)";
-      const chatMsg = document.createElement("p");
-      chatMsg.style.textOverflow = "ellipsis";
-      chatMsg.style.overflow = "hidden";
+    if (this.myInput) {
+      const chatMsgBox = document.createElement('div');
+      chatMsgBox.style.width = '50%';
+      chatMsgBox.style.margin = 'auto';
+      chatMsgBox.style.marginBottom = '0.5rem';
+      chatMsgBox.style.marginRight = '0.85rem';
+      chatMsgBox.style.paddingLeft = '0.5rem';
+      chatMsgBox.style.paddingRight = '0.5rem';
+      chatMsgBox.style.lineHeight = '1.35';
+      chatMsgBox.style.backgroundColor = 'var(--color-gray-500)';
+      chatMsgBox.style.borderRadius = 'var(--radius-md)';
+      const chatMsg = document.createElement('p');
+      chatMsg.style.textOverflow = 'ellipsis';
+      chatMsg.style.overflow = 'hidden';
       chatMsg.innerText = this.myInput;
       chatMsgBox.appendChild(chatMsg);
-      document.getElementById("chatBox")?.appendChild(chatMsgBox);
+      document.getElementById('chatBox')?.appendChild(chatMsgBox);
       setTimeout(() => {
-        const chatMsgResp = document.createElement("div");
-        chatMsgResp.style.width = "50%";
-        chatMsgResp.style.margin = "auto";
-        chatMsgResp.style.marginBottom = "0.5rem";
-        chatMsgResp.style.marginLeft = "0.85rem";
-        chatMsgResp.style.paddingLeft = "0.5rem";
-        chatMsgResp.style.paddingRight = "0.5rem";
-        chatMsgResp.style.lineHeight = "1.35";
-        chatMsgResp.style.backgroundColor = "var(--color-gray-500)";
-        chatMsgResp.style.borderRadius = "var(--radius-md)";
-        const respMsg = document.createElement("p");
-        respMsg.style.textOverflow = "ellipsis";
-        respMsg.style.overflow = "hidden";
+        const chatMsgResp = document.createElement('div');
+        chatMsgResp.style.width = '50%';
+        chatMsgResp.style.margin = 'auto';
+        chatMsgResp.style.marginBottom = '0.5rem';
+        chatMsgResp.style.marginLeft = '0.85rem';
+        chatMsgResp.style.paddingLeft = '0.5rem';
+        chatMsgResp.style.paddingRight = '0.5rem';
+        chatMsgResp.style.lineHeight = '1.35';
+        chatMsgResp.style.backgroundColor = 'var(--color-gray-500)';
+        chatMsgResp.style.borderRadius = 'var(--radius-md)';
+        const respMsg = document.createElement('p');
+        respMsg.style.textOverflow = 'ellipsis';
+        respMsg.style.overflow = 'hidden';
         this.chatRespId++;
-        respMsg.id = "resp" + this.chatRespId;
+        respMsg.id = 'resp' + this.chatRespId;
         respMsg.innerText = this.textStream;
         chatMsgResp.appendChild(respMsg);
-        document.getElementById("chatBox")?.appendChild(chatMsgResp);
+        document.getElementById('chatBox')?.appendChild(chatMsgResp);
       }, 250);
     }
   }
@@ -116,382 +115,22 @@ export class AppComponent implements OnInit {
   }
 
   async onGoClickEnter(event: KeyboardEvent) {
-    if (event.key === 'Enter')
-      await this.generateMaintask();
+    if (event.key === 'Enter') await this.generateMaintask();
   }
 
   async generateMaintask(): Promise<void> {
     try {
       const file = this.bigdummydataFile;
-      const { title: generatedTitle, subtasks: generatedSubtasks } = await this.taskService.generateTask({
-        // file,
-        prompt: `What does Jason love? Use this dataset: [
-  {
-    "firstName": "Jason",
-    "lastName": "Levy",
-    "birthday": 725932800,
-    "genderIdentity": "",
-    "gender": "male",
-    "genderPref": "female",
-    "email": "",
-    "phoneNumber": "+1-213-555-0110",
-    "instagram": "",
-    "currentLocation": {
-      "name": "Los Angeles, CA",
-      "location": {
-        "geohash": "9q5ctrh7",
-        "geopoint": {
-          "_latitude": 34.05,
-          "_longitude": -118.24
-        }
-      }
-    },
-    "hometown": {
-      "name": "",
-      "location": {
-        "geohash": "",
-        "geopoint": {
-          "_latitude": 0,
-          "_longitude": 0
-        }
-      }
-    },
-    "height": 183,
-    "heightMinPref": 0,
-    "heightMaxPref": 0,
-    "profilePicture_0": "",
-    "profilePicture_1": "",
-    "profilePicture_2": "",
-    "profilePicture_3": "",
-    "profilePicture_4": "",
-    "profilePicture_5": "",
-    "companyName": "Snap Inc.",
-    "profession": "Engineer",
-    "careerHistory": "",
-    "education": "USC",
-    "relationshipPreference": "serious",
-    "kidsStatus": "no_kids",
-    "kidsPreference": "open",
-    "openToPartnerWithKids": "no",
-    "openToLongDistance": "no",
-    "religion": "jewish",
-    "religionDevotion": "culturally",
-    "politicalParty": "moderate",
-    "sharedValues": ["family", "health_wellness"],
-    "introversionScale": "ambiverted",
-    "desiredPartnerIntroversion": "open",
-    "affectionPreferences": ["quality_time", "touch"],
-    "communicationPreference": "text",
-    "scaryMovies": "no",
-    "sexDrive": 7,
-    "friendDescription": ["kind", "reliable"],
-    "vices": {
-      "alcohol": "sometimes",
-      "weed": "no",
-      "nicotine": "no",
-      "psychedelics": "no"
-    },
-    "dealbreakerVices": [],
-    "prompts": [
-      {
-        "index": 0,
-        "question": "Sunday routine",
-        "answer": "gym idk bagels whatever"
-      },
-      {
-        "index": 1,
-        "question": "We’ll get along if",
-        "answer": ""
-      },
-      {
-        "index": 2,
-        "question": "Most useless skill",
-        "answer": "i can wiggle my ears lol"
-      }
-    ],
-    "loves": ["marathons", "sushi"],
-    "hates": ["parking tickets"],
-    "firstDateSuggestions": ["coffee, walk, vibes"],
-    "idealPartnerDescription": ["funny, likes dogs", ""],
-    "physicalPreferences": "",
-    "importantDealbreakers": []
-  },
-  {
-    "firstName": "Leo",
-    "lastName": "Han",
-    "birthday": 915148800,
-    "genderIdentity": "",
-    "gender": "male",
-    "genderPref": "everyone",
-    "email": "leo@example",
-    "phoneNumber": "",
-    "instagram": "leo_music",
-    "currentLocation": {
-      "name": "Brooklyn, NY",
-      "location": {
-        "geohash": "dr5ru7mz",
-        "geopoint": {
-          "_latitude": 40.69,
-          "_longitude": -73.96
-        }
-      }
-    },
-    "hometown": {
-      "name": "Edison, NJ",
-      "location": {
-        "geohash": "dr5r7m36",
-        "geopoint": {
-          "_latitude": 40.52,
-          "_longitude": -74.41
-        }
-      }
-    },
-    "height": 0,
-    "heightMinPref": 0,
-    "heightMaxPref": 0,
-    "profilePicture_0": "https://pics/leo0.jpg",
-    "profilePicture_1": "",
-    "profilePicture_2": "",
-    "profilePicture_3": "",
-    "profilePicture_4": "",
-    "profilePicture_5": "",
-    "companyName": "",
-    "profession": "",
-    "careerHistory": "",
-    "education": "NYU",
-    "relationshipPreference": "casual",
-    "kidsStatus": "no_kids",
-    "kidsPreference": "dont_want",
-    "openToPartnerWithKids": "yes",
-    "openToLongDistance": "yes",
-    "religion": "atheist",
-    "religionDevotion": "none",
-    "politicalParty": "liberal",
-    "sharedValues": [],
-    "introversionScale": "extraverted",
-    "desiredPartnerIntroversion": "ambiverted",
-    "affectionPreferences": [],
-    "communicationPreference": "voice",
-    "scaryMovies": "yes",
-    "sexDrive": 8,
-    "friendDescription": ["funny"],
-    "vices": {
-      "alcohol": "yes",
-      "weed": "yes",
-      "nicotine": "yes",
-      "psychedelics": "yes"
-    },
-    "dealbreakerVices": ["nicotine"],
-    "prompts": [
-      {
-        "index": 0,
-        "question": "Pet peeve",
-        "answer": "slow walkers !!!"
-      },
-      {
-        "index": 1,
-        "question": "Two truths and a lie",
-        "answer": "idk figure it out"
-      },
-      {
-        "index": 2,
-        "question": "My superpower",
-        "answer": "none lol"
-      }
-    ],
-    "loves": ["DJing"],
-    "hates": [],
-    "firstDateSuggestions": ["karaoke dive bar"],
-    "idealPartnerDescription": ["someone chill"],
-    "physicalPreferences": "",
-    "importantDealbreakers": ["can’t handle nightlife"]
-  },
-  {
-    "firstName": "Maya",
-    "lastName": "Klein",
-    "birthday": 820540800,
-    "genderIdentity": "",
-    "gender": "female",
-    "genderPref": "male",
-    "email": "mk@example.com",
-    "phoneNumber": "",
-    "instagram": "http://",
-    "currentLocation": {
-      "name": "San Francisco, CA",
-      "location": {
-        "geohash": "9q8yyqbc",
-        "geopoint": {
-          "_latitude": 37.77,
-          "_longitude": -122.42
-        }
-      }
-    },
-    "hometown": {
-      "name": "",
-      "location": {
-        "geohash": "",
-        "geopoint": {
-          "_latitude": 0,
-          "_longitude": 0
-        }
-      }
-    },
-    "height": 168,
-    "heightMinPref": 0,
-    "heightMaxPref": 0,
-    "profilePicture_0": "",
-    "profilePicture_1": "",
-    "profilePicture_2": "",
-    "profilePicture_3": "",
-    "profilePicture_4": "",
-    "profilePicture_5": "",
-    "companyName": "Stripe",
-    "profession": "PM",
-    "careerHistory": "i do product things",
-    "education": "",
-    "relationshipPreference": "serious",
-    "kidsStatus": "no_kids",
-    "kidsPreference": "want",
-    "openToPartnerWithKids": "no",
-    "openToLongDistance": "no",
-    "religion": "jewish",
-    "religionDevotion": "moderate",
-    "politicalParty": "liberal",
-    "sharedValues": ["career_ambitions", "family"],
-    "introversionScale": "ambiverted",
-    "desiredPartnerIntroversion": "open",
-    "affectionPreferences": ["acts_of_service"],
-    "communicationPreference": "video",
-    "scaryMovies": "sometimes",
-    "sexDrive": 5,
-    "friendDescription": [],
-    "vices": {
-      "alcohol": "sometimes",
-      "weed": "no",
-      "nicotine": "no",
-      "psychedelics": "no"
-    },
-    "dealbreakerVices": [],
-    "prompts": [
-      {
-        "index": 0,
-        "question": "Most irrational fear",
-        "answer": "birds i guess"
-      },
-      {
-        "index": 1,
-        "question": "Nerdy thing about me",
-        "answer": "space!!"
-      },
-      {
-        "index": 2,
-        "question": "Perfect Sunday",
-        "answer": ""
-      }
-    ],
-    "loves": ["matcha"],
-    "hates": [],
-    "firstDateSuggestions": ["city hike"],
-    "idealPartnerDescription": ["curious, growth-minded"],
-    "physicalPreferences": "",
-    "importantDealbreakers": []
-  },
-  {
-    "firstName": "Elena",
-    "lastName": "",
-    "birthday": 0,
-    "genderIdentity": "",
-    "gender": "female",
-    "genderPref": "male",
-    "email": "elena@example.org",
-    "phoneNumber": "+1-305-555-0144",
-    "instagram": "elena_art",
-    "currentLocation": {
-      "name": "",
-      "location": {
-        "geohash": "",
-        "geopoint": {
-          "_latitude": 0,
-          "_longitude": 0
-        }
-      }
-    },
-    "hometown": {
-      "name": "Miami, FL",
-      "location": {
-        "geohash": "dhw5fjk3",
-        "geopoint": {
-          "_latitude": 25.76,
-          "_longitude": -80.19
-        }
-      }
-    },
-    "height": 160,
-    "heightMinPref": 0,
-    "heightMaxPref": 0,
-    "profilePicture_0": "https://pics/elena0.jpg",
-    "profilePicture_1": "",
-    "profilePicture_2": "",
-    "profilePicture_3": "",
-    "profilePicture_4": "",
-    "profilePicture_5": "",
-    "companyName": "Bal Harbour Museum",
-    "profession": "Curator",
-    "careerHistory": "curates art lol",
-    "education": "Columbia",
-    "relationshipPreference": "serious",
-    "kidsStatus": "has_kids",
-    "kidsPreference": "open",
-    "openToPartnerWithKids": "yes",
-    "openToLongDistance": "yes",
-    "religion": "catholic",
-    "religionDevotion": "none",
-    "politicalParty": "liberal",
-    "sharedValues": [],
-    "introversionScale": "extraverted",
-    "desiredPartnerIntroversion": "introverted",
-    "affectionPreferences": ["quality_time"],
-    "communicationPreference": "in_person",
-    "scaryMovies": "no",
-    "sexDrive": 6,
-    "friendDescription": ["outgoing", "creative"],
-    "vices": {
-      "alcohol": "yes",
-      "weed": "no",
-      "nicotine": "no",
-      "psychedelics": "no"
-    },
-    "dealbreakerVices": [],
-    "prompts": [
-      {
-        "index": 0,
-        "question": "Simple pleasure",
-        "answer": "scroll tiktok 4 hrs"
-      },
-      {
-        "index": 1,
-        "question": "Ideal weekend",
-        "answer": ""
-      },
-      {
-        "index": 2,
-        "question": "Hot take",
-        "answer": "pineapple ON pizza!!!"
-      }
-    ],
-    "loves": ["salsa dancing"],
-    "hates": ["slow museum patrons"],
-    "firstDateSuggestions": [],
-    "idealPartnerDescription": ["can dance or willing 2 learn"],
-    "physicalPreferences": "",
-    "importantDealbreakers": ["smoking"]
-  }
-]`,
-        // prompt: `What is in the image?`,
-        // prompt: `What is in the text file?`,
-
-      });
-      document.getElementById("resp" + this.chatRespId)!.innerText = document.getElementById("resp" + this.chatRespId)?.innerText.concat(" " + generatedTitle)!;
+      const { title: generatedTitle, subtasks: generatedSubtasks } =
+        await this.taskService.generateTask({
+          file,
+          prompt: `What does Jason love?`,
+          // prompt: `What is in the image?`,
+          // prompt: `What is in the text file?`,
+        });
+      document.getElementById('resp' + this.chatRespId)!.innerText = document
+        .getElementById('resp' + this.chatRespId)
+        ?.innerText.concat(' ' + generatedTitle)!;
 
       const newTaskRef = this.taskService.createTaskRef();
       const maintask: Task = {
@@ -502,19 +141,17 @@ export class AppComponent implements OnInit {
         createdTime: Timestamp.fromDate(new Date()),
         priority: 'none',
       };
-      const subtasks = generatedSubtasks?.map(
-        (generatedSubtask, i) => {
-          return {
-            id: this.taskService.createTaskRef().id,
-            title: generatedSubtask,
-            completed: false,
-            parentId: newTaskRef.id,
-            order: i,
-            owner: maintask.owner,
-            createdTime: maintask.createdTime,
-          };
-        }
-      );
+      const subtasks = generatedSubtasks?.map((generatedSubtask, i) => {
+        return {
+          id: this.taskService.createTaskRef().id,
+          title: generatedSubtask,
+          completed: false,
+          parentId: newTaskRef.id,
+          order: i,
+          owner: maintask.owner,
+          createdTime: maintask.createdTime,
+        };
+      });
       this.generatedTask = { maintask, subtasks };
     } catch (error) {
       this.handleError(error, 'Failed to generate main task.');
