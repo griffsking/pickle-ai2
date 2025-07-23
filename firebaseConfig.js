@@ -3,12 +3,13 @@ import { getFirestore } from "firebase/firestore";
 import { getFunctions } from "firebase/functions";
 
 const firebaseConfig = {
-    apiKey: "AIzaSyD3nHKnbi_ZC0ZqFaRH6PSBSTVjNKL-kuA",
-    authDomain: "sample-firebase-ai-app-62fea.firebaseapp.com",
-    projectId: "sample-firebase-ai-app-62fea",
-    storageBucket: "sample-firebase-ai-app-62fea.firebasestorage.app",
-    messagingSenderId: "645522859617",
-    appId: "1:645522859617:web:d6b9ee3921165721dfac20",
+  apiKey: "AIzaSyBrv0ehrAnBiN8bGLeHDya_JLcjaIixPRo",
+  authDomain: "ai-pickle.firebaseapp.com",
+  projectId: "ai-pickle",
+  storageBucket: "ai-pickle.firebasestorage.app",
+  messagingSenderId: "284797240601",
+  appId: "1:284797240601:web:9fa565dc75d5cfad623188",
+  measurementId: "G-Q1LRCX2VQ8"
 };
 
 const firebaseApp = initializeApp(firebaseConfig);
